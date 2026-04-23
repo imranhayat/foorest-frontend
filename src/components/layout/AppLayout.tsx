@@ -1,28 +1,18 @@
-import { Outlet, NavLink, useNavigate } from 'react-router-dom';
-import { Users, MessageSquare, UserCircle, Shield, LayoutDashboard, LogOut } from 'lucide-react';
+import { Outlet, NavLink } from 'react-router-dom';
+import { Users, UserCircle, Shield, LayoutDashboard, LogOut } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 interface AppLayoutProps {
   isAdmin?: boolean;
 }
 
 export function AppLayout({ isAdmin = false }: AppLayoutProps) {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    if (isAdmin) {
-      localStorage.removeItem('admin_token');
-      navigate('/admin/login');
-    } else {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      navigate('/login');
-    }
-  };
+  const { logout, logoutAdmin } = useAuth();
 
   const userNav = [
     { to: '/', label: 'Groups', icon: Users, end: true },
-    { to: '/friends', label: 'Friends', icon: UserCircle },
-    { to: '/profile', label: 'Profile', icon: MessageSquare },
+    { to: '/friends', label: 'Friends', icon: Users },
+    { to: '/profile', label: 'Profile', icon: UserCircle },
   ];
 
   const adminNav = [
@@ -37,7 +27,7 @@ export function AppLayout({ isAdmin = false }: AppLayoutProps) {
     <div className="flex h-screen bg-gray-50">
       <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
-          <h1 className="text-2xl font-bold text-[--color-brand]">
+          <h1 className="text-2xl font-bold text-brand">
             {isAdmin ? 'Foorest Admin' : 'Foorest'}
           </h1>
         </div>
@@ -50,7 +40,7 @@ export function AppLayout({ isAdmin = false }: AppLayoutProps) {
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive
-                    ? 'bg-[--color-brand] text-white'
+                    ? 'bg-brand text-white'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`
               }
@@ -62,7 +52,7 @@ export function AppLayout({ isAdmin = false }: AppLayoutProps) {
         </nav>
         <div className="p-4 border-t border-gray-200">
           <button
-            onClick={handleLogout}
+            onClick={isAdmin ? logoutAdmin : logout}
             className="flex items-center gap-3 px-3 py-2 w-full rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
           >
             <LogOut size={18} />
