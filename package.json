@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint src",
     "preview": "vite preview",
@@ -28,6 +28,7 @@
     "clsx": "2.1.1",
     "graphql": "16.13.2",
     "graphql-ws": "6.0.8",
+    "libphonenumber-js": "^1.12.42",
     "lucide-react": "1.8.0",
     "react": "19.2.5",
     "react-dom": "19.2.5",
