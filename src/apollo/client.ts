@@ -17,9 +17,10 @@ const httpLink = new HttpLink({
 const wsLink = new GraphQLWsLink(
   createClient({
     url: import.meta.env.VITE_WS_URL ?? 'ws://localhost:3001/graphql',
-    connectionParams: () => ({
-      Authorization: `Bearer ${localStorage.getItem('access_token') ?? ''}`,
-    }),
+    connectionParams: () => {
+      const token = localStorage.getItem('access_token');
+      return token ? { Authorization: `Bearer ${token}` } : {};
+    },
   }),
 );
 
